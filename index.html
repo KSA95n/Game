@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مغامرة اليوم الوطني 96</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- شاشة التحميل -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <h1>🇸🇦 مغامرة اليوم الوطني 96 🇸🇦</h1>
+            <div class="loader-bar">
+                <div class="loader-progress" id="loader-progress"></div>
+            </div>
+            <p id="loading-text">جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- القائمة الرئيسية -->
+    <div id="main-menu" class="screen hidden">
+        <div class="menu-bg">
+            <div class="flag-decoration">🇸🇦</div>
+            <h1 class="game-title">مغامرة اليوم الوطني</h1>
+            <p class="game-subtitle">النسخة 96 - 1447هـ</p>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn start-btn" onclick="game.startGame()">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">بدء اللعبة</span>
+                </button>
+                
+                <button class="menu-btn settings-btn" onclick="game.showSettings()">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-text">الإعدادات</span>
+                </button>
+                
+                <button class="menu-btn info-btn" onclick="game.showInfo()">
+                    <span class="btn-icon">ℹ️</span>
+                    <span class="btn-text">معلومات</span>
+                </button>
+            </div>
+            
+            <div class="menu-footer">
+                <p>صُنع بحب في المملكة العربية السعودية ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الإعدادات -->
+    <div id="settings-screen" class="screen hidden">
+        <div class="panel">
+            <h2>⚙️ الإعدادات</h2>
+            
+            <div class="setting-item">
+                <label>حجم الأزرار</label>
+                <div class="slider-container">
+                    <input type="range" id="btn-size-slider" min="0.8" max="1.5" step="0.1" value="1">
+                    <span id="btn-size-value">100%</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <label>مستوى الصوت</label>
+                <div class="slider-container">
+                    <input type="range" id="volume-slider" min="0" max="100" step="5" value="70">
+                    <span id="volume-value">70%</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <label>المؤثرات الصوتية</label>
+                <label class="toggle">
+                    <input type="checkbox" id="sfx-toggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <button class="back-btn" onclick="game.showMenu()">⬅️ رجوع</button>
+        </div>
+    </div>
+
+    <!-- شاشة المعلومات -->
+    <div id="info-screen" class="screen hidden">
+        <div class="panel info-panel">
+            <h2>ℹ️ معلومات اللعبة</h2>
+            
+            <div class="info-section">
+                <h3>👨‍💻 صانع اللعبة</h3>
+                <p class="creator-name">مونس عطوي</p>
+            </div>
+            
+            <div class="info-section">
+                <h3>🎉 المشاركون في فعالية اليوم الوطني السعودي 96</h3>
+                <div class="participants-grid">
+                    <div class="participant">سعود الصويان</div>
+                    <div class="participant">مازن النخلي</div>
+                    <div class="participant">حسام البلوي</div>
+                    <div class="participant">محمد مازن</div>
+                    <div class="participant">وباقي المشاركين</div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3>🎮 عن اللعبة</h3>
+                <p>لعبة منصات 2D احتفالاً باليوم الوطني السعودي 96. اجمع النجوم، تجاوز العقبات، واجب على الأسئلة!</p>
+            </div>
+            
+            <button class="back-btn" onclick="game.showMenu()">⬅️ رجوع</button>
+        </div>
+    </div>
+
+    <!-- شاشة اللعب -->
+    <div id="game-screen" class="screen hidden">
+        <canvas id="game-canvas"></canvas>
+        <div class="game-ui">
+            <div class="hud">
+                <div class="hud-item">⭐ <span id="score">0</span></div>
+                <div class="hud-item">❤️ <span id="lives">3</span></div>
+                <div class="hud-item">🚩 المرحلة <span id="level">1</span></div>
+            </div>
+            <button class="pause-btn" onclick="game.pause()">⏸️</button>
+        </div>
+    </div>
+
+    <!-- شاشة الأسئلة -->
+    <div id="quiz-screen" class="screen hidden">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h2>🎓 سؤال المرحلة</h2>
+                <p>أجب إجابة صحيحة للمتابعة!</p>
+            </div>
+            
+            <div class="quiz-question" id="quiz-question"></div>
+            
+            <div class="quiz-answers" id="quiz-answers"></div>
+            
+            <div class="quiz-result hidden" id="quiz-result"></div>
+        </div>
+    </div>
+
+    <!-- شاشة النهاية -->
+    <div id="game-over-screen" class="screen hidden">
+        <div class="panel">
+            <h2 id="game-over-title">🎉 مبروك!</h2>
+            <p id="game-over-text"></p>
+            <div class="final-score">
+                <span>النتيجة النهائية: </span>
+                <span id="final-score">0</span> ⭐
+            </div>
+            <button class="menu-btn" onclick="game.restart()">🔄 العب مرة أخرى</button>
+            <button class="back-btn" onclick="game.showMenu()">🏠 القائمة الرئيسية</button>
+        </div>
+    </div>
+
+    <!-- أصوات -->
+    <audio id="bg-music" loop>
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=" type="audio/wav">
+    </audio>
+
+    <script src="js/config.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/entities.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
